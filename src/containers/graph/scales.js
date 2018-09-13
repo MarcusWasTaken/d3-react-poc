@@ -1,15 +1,17 @@
 import { scaleLinear } from 'd3'
 
-export const createLinearScale = (data, key, range) =>
-  scaleLinear()
+export function createLinearScale(data, key, range) {
+  return scaleLinear()
     .domain([
       Math.min(...data.map(obj => obj[key])) / 1.01,
       Math.max(...data.map(obj => obj[key])) * 1.01
     ])
     .range(range)
+}
 
-export const updateScale = (scale, data, key) =>
-  scale.domain([
+export function updateScale(scale, data, key) {
+  return scale.domain([
     Math.min(...data.map(obj => obj[key])) / 1.01,
     Math.max(...data.map(obj => obj[key])) * 1.01
   ])
+}

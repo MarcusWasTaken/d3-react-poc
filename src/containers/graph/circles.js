@@ -1,9 +1,11 @@
 import t from './transition'
 
-export const selectCircles = (node, data) => node.selectAll('circle').data(data)
+export function selectCircles(node, data) {
+  return node.selectAll('circle').data(data)
+}
 
-export const createCircles = (circles, x, y) =>
-  circles
+export function createCircles(circles, x, y) {
+  return circles
     .enter()
     .append('circle')
     .attr('cx', d => x(d.gpa))
@@ -14,17 +16,20 @@ export const createCircles = (circles, x, y) =>
     .transition(t)
     .attr('fill-opacity', 1)
     .attr('cy', d => y(d.height))
+}
 
-export const updateCircles = (circles, x, y) =>
-  circles
+export function updateCircles(circles, x, y) {
+  return circles
     .transition(t)
     .attr('cx', d => x(d.gpa))
     .attr('cy', d => y(d.height))
+}
 
-export const removeCircles = (circles, y) =>
-  circles
+export function removeCircles(circles, y) {
+  return circles
     .exit()
     .transition(t)
     .attr('fill-opacity', 0.1)
     .attr('cy', y(0))
     .remove()
+}

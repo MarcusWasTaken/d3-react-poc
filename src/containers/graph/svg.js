@@ -1,6 +1,7 @@
 import { select } from 'd3'
 
-export const createDiagram = (node, { left, top }) =>
-  select(node)
+export function createDiagram(node, { left, top }) {
+  return select(node)
     .append('g')
     .attr('transform', `translate(${left}, ${top})`)
+}
