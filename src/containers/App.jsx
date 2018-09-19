@@ -1,5 +1,6 @@
 import React from 'react'
 import Graph from 'containers/Graph'
+import AxisSelect from './graph/AxisSelect'
 
 const datasets = [
   [
@@ -35,6 +36,7 @@ class App extends React.Component {
 
     return (
       <React.Fragment>
+        <AxisSelect />
         <Graph width={800} height={500} data={data} margin={this.margin} />
         <button onClick={this.handleClick}>Switch dataset</button>
       </React.Fragment>
