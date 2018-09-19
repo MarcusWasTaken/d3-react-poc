@@ -23,7 +23,7 @@ class AxisSelect extends React.Component {
         <span>
           <strong>X Axis: </strong>
           <Select
-            value={xAxis}
+            value={xAxis || ''}
             options={axisOptions}
             onChange={this.onXAxisChange}
           />
@@ -31,7 +31,7 @@ class AxisSelect extends React.Component {
         <span>
           <strong>Gap Y Axis: </strong>
           <Select
-            value={gapYAxis}
+            value={gapYAxis || ''}
             options={axisOptions}
             onChange={this.onGapYAxisChange}
           />
@@ -39,7 +39,7 @@ class AxisSelect extends React.Component {
         <span>
           <strong>Concept Y Axis: </strong>
           <Select
-            value={conceptYAxis}
+            value={conceptYAxis || ''}
             options={axisOptions}
             onChange={this.onConceptYAxisChange}
           />
