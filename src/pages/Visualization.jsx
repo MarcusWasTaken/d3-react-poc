@@ -1,4 +1,5 @@
 import React from 'react'
+import QRCode from 'qrcode'
 import Graph from 'containers/Graph'
 import AxisSelect from 'containers/graph/AxisSelect'
 
@@ -32,6 +33,10 @@ class Visualization extends React.Component {
     this.state = { data: datasets[0], dataset: 0 }
   }
 
+  componentDidMount() {
+    this.generateQRCode()
+  }
+
   render() {
     const { data } = this.state
 
@@ -40,6 +45,7 @@ class Visualization extends React.Component {
         <AxisSelect />
         <Graph width={800} height={500} data={data} margin={margin} />
         <button onClick={this.handleClick}>Switch dataset</button>
+        <canvas ref={node => (this.canvas = node)} />
       </React.Fragment>
     )
   }
@@ -51,6 +57,10 @@ class Visualization extends React.Component {
       data: datasets[dataset],
       dataset
     })
+  }
+
+  generateQRCode = () => {
+    QRCode.toCanvas(this.canvas, 'http://10.10.2.83:3020/')
   }
 }
 
