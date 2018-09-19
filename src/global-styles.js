@@ -23,6 +23,6 @@ injectGlobal`
   #root {
     min-height: 100%;
     min-width: 100%;
-    display: flex;
+    /* display: flex; */
   }
 `
