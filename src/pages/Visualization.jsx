@@ -1,7 +1,10 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 import QRCode from 'qrcode'
 import Graph from 'containers/Graph'
 import AxisSelect from 'containers/graph/AxisSelect'
+import { getGaps, getConcepts } from 'containers/app/selectors'
 
 const datasets = [
   [
@@ -39,6 +42,7 @@ class Visualization extends React.Component {
 
   render() {
     const { data } = this.state
+    const { gaps } = this.props
 
     return (
       <React.Fragment>
@@ -46,6 +50,16 @@ class Visualization extends React.Component {
         <Graph width={800} height={500} data={data} margin={margin} />
         <button onClick={this.handleClick}>Switch dataset</button>
         <canvas ref={node => (this.canvas = node)} />
+        <h4>Links to gaps:</h4>
+        {gaps && (
+          <ul>
+            {Object.values(gaps).map(gap => (
+              <li>
+                <Link to={`/gap/${gap.id}`}>{gap.title}</Link>
+              </li>
+            ))}
+          </ul>
+        )}
       </React.Fragment>
     )
   }
@@ -64,4 +78,9 @@ class Visualization extends React.Component {
   }
 }
 
-export default Visualization
+const mapStateToProps = state => ({
+  gaps: getGaps(state),
+  concepts: getConcepts(state)
+})
+
+export default connect(mapStateToProps)(Visualization)
