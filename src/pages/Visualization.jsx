@@ -49,12 +49,14 @@ class Visualization extends React.Component {
         <AxisSelect />
         <Graph width={800} height={500} data={data} margin={margin} />
         <button onClick={this.handleClick}>Switch dataset</button>
-        <canvas ref={node => (this.canvas = node)} />
+        <div>
+          <canvas ref={node => (this.canvas = node)} />
+        </div>
         <h4>Links to gaps:</h4>
         {gaps && (
           <ul>
             {Object.values(gaps).map(gap => (
-              <li>
+              <li key={gap.id}>
                 <Link to={`/gap/${gap.id}`}>{gap.title}</Link>
               </li>
             ))}
