@@ -77,7 +77,7 @@ class Visualization extends React.Component {
   }
 
   generateQRCode = () => {
-    QRCode.toCanvas(this.canvas, `${localIP}/`)
+    QRCode.toCanvas(this.canvas, `${localIP}/`, { errorCorrectionLevel: 'Q' })
   }
 }
 

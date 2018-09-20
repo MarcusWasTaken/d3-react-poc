@@ -28,7 +28,9 @@ class GapPage extends React.Component {
     const { match } = this.props
     const id = match.params.id
 
-    QRCode.toCanvas(this.canvas, `${localIP}/gap/${id}`)
+    QRCode.toCanvas(this.canvas, `${localIP}/gap/${id}`, {
+      errorCorrectionLevel: 'Q'
+    })
   }
 }
 
