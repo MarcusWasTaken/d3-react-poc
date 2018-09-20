@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import QRCode from 'qrcode'
 import { connect } from 'react-redux'
 import { getGaps } from 'containers/app/selectors'
+import { localIP } from 'config'
 
 class GapPage extends React.Component {
   componentDidMount() {
@@ -27,7 +28,7 @@ class GapPage extends React.Component {
     const { match } = this.props
     const id = match.params.id
 
-    QRCode.toCanvas(this.canvas, `http://10.10.2.83:3020/gap/${id}`)
+    QRCode.toCanvas(this.canvas, `${localIP}/gap/${id}`)
   }
 }
 

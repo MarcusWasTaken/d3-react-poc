@@ -5,6 +5,7 @@ import QRCode from 'qrcode'
 import Graph from 'containers/Graph'
 import AxisSelect from 'containers/graph/AxisSelect'
 import { getGaps, getConcepts } from 'containers/app/selectors'
+import { localIP } from 'config'
 
 const datasets = [
   [
@@ -76,7 +77,7 @@ class Visualization extends React.Component {
   }
 
   generateQRCode = () => {
-    QRCode.toCanvas(this.canvas, 'http://10.10.2.83:3020/')
+    QRCode.toCanvas(this.canvas, `${localIP}/`)
   }
 }
 
