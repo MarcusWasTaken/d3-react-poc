@@ -31,7 +31,8 @@ class PageDateTitle extends React.PureComponent {
 
     const formattedCreationDate = format(new Date(creationDate), 'D MMM YYYY')
     const formattedChangedDate = format(new Date(changedDate), 'D MMM YYYY')
-    const showChangedDate = changedDate && changedDate !== creationDate
+    const showChangedDate =
+      changedDate && formattedCreationDate !== formattedChangedDate
 
     return (
       <StyledDateTitle>
