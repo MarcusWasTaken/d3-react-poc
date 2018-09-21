@@ -8,7 +8,9 @@ function store() {
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
   const middlewares = [thunk]
   const preloadedState = {
-    data
+    app: {
+      data
+    }
   }
 
   const store = createStore(

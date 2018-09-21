@@ -1,21 +1,8 @@
 import { combineReducers } from 'redux'
-
-const gaps = (state = {}, action) => {
-  return state
-}
-const concepts = (state = {}, action) => {
-  return state
-}
-const gapRelations = (state = {}, action) => {
-  return state
-}
-const gapConceptRelations = (state = {}, action) => {
-  return state
-}
+import data from 'containers/app/reducers/data'
+import selected from 'containers/app/reducers/selected'
 
 export default combineReducers({
-  gaps,
-  concepts,
-  gapRelations,
-  gapConceptRelations
+  data,
+  selected
 })

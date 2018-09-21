@@ -1,14 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import QRCode from 'qrcode'
 import Graph from 'containers/Graph'
 import AxisSelect from 'containers/graph/AxisSelect'
 import { getGaps, getConcepts } from 'containers/app/selectors'
-import { localIP } from 'config'
 import SinglePage from 'components/SinglePage'
 import PageHeader from 'components/singlePage/PageHeader'
 import PageTitle from 'components/singlePage/PageTitle'
+import NodeSelect from './visualization/NodeSelect'
+import SelectedNodes from './visualization/SelectedNodes'
 
 const datasets = [
   [
@@ -40,10 +40,6 @@ class Visualization extends React.Component {
     this.state = { data: datasets[0], dataset: 0 }
   }
 
-  componentDidMount() {
-    this.generateQRCode()
-  }
-
   render() {
     const { data } = this.state
     const { gaps, concepts } = this.props
@@ -57,9 +53,6 @@ class Visualization extends React.Component {
         <AxisSelect />
         <Graph width={800} height={500} data={data} margin={margin} />
         <button onClick={this.handleClick}>Switch dataset</button>
-        <div>
-          <canvas ref={node => (this.canvas = node)} />
-        </div>
         <h4>Links to gaps:</h4>
         {gaps && (
           <ul>
@@ -80,6 +73,8 @@ class Visualization extends React.Component {
             ))}
           </ul>
         )}
+        <NodeSelect />
+        <SelectedNodes />
       </SinglePage>
     )
   }
@@ -91,10 +86,6 @@ class Visualization extends React.Component {
       data: datasets[dataset],
       dataset
     })
-  }
-
-  generateQRCode = () => {
-    QRCode.toCanvas(this.canvas, `${localIP}/`, { errorCorrectionLevel: 'Q' })
   }
 }
 

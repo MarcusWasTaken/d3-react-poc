@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
-import data from 'containers/app/reducers'
+import app from 'containers/app/reducers'
 import graph from 'containers/graph/reducers'
 
 export default combineReducers({
-  data,
+  app,
   graph
 })

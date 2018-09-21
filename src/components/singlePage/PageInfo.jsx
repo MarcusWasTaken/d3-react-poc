@@ -13,7 +13,10 @@ const PageInfo = styled.section`
   dt {
     font-size: 24px;
     margin-bottom: 4px;
-    /* letter-spacing: 0.15px; */
+
+    @media screen {
+      color: #0086bf;
+    }
   }
 
   dd {
@@ -38,6 +41,7 @@ const PageInfo = styled.section`
   @media (max-width: 640px) {
     dt {
       font-size: 20px;
+      letter-spacing: 0.15px;
     }
 
     dd {
@@ -48,6 +52,7 @@ const PageInfo = styled.section`
   @media print {
     dt {
       font-size: 20px;
+      letter-spacing: 0.15px;
     }
 
     dd {
