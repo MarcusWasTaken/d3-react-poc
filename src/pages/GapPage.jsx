@@ -4,10 +4,10 @@ import { getGaps } from 'containers/app/selectors'
 import SinglePage from 'components/SinglePage'
 import PageHeader from 'components/singlePage/PageHeader'
 import PageTitle from 'components/singlePage/PageTitle'
-import PageSubTitle from 'components/singlePage/PageSubTitle'
 import PageFigure from 'components/singlePage/PageFigure'
 import PageComments from 'components/singlePage/PageComments'
 import GapPageInfo from './gapPage/GapPageInfo'
+import PageDateTitle from 'components/singlePage/PageDateTitle'
 
 class GapPage extends React.Component {
   render() {
@@ -16,7 +16,10 @@ class GapPage extends React.Component {
       <SinglePage>
         <PageHeader id={match.params.id}>
           <PageTitle>{gap.title.toUpperCase()} gap</PageTitle>
-          <PageSubTitle>Created {gap.creationDate}</PageSubTitle>
+          <PageDateTitle
+            creationDate={gap.creationDate}
+            changedDate={gap.changeDate}
+          />
         </PageHeader>
         <GapPageInfo gap={gap} />
         {gap.image && (
