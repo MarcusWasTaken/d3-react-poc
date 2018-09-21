@@ -3,8 +3,8 @@ import { injectGlobal } from 'styled-components'
 injectGlobal`
   html,
   body {
-    height: 100%;
-    width: 100%;
+    /* height: 100%;
+    width: 100%; */
   }
 
   html {
@@ -25,8 +25,8 @@ injectGlobal`
   }
 
   #root {
-    min-height: 100%;
-    min-width: 100%;
+    /* min-height: 100%;
+    min-width: 100%; */
     /* display: flex; */
   }
 `

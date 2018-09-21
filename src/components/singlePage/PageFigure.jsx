@@ -18,10 +18,11 @@ const PageFigure = styled.figure`
 
   figcaption {
     margin-top: 16px;
-    font-size: 20px;
-    letter-spacing: 0.15px;
     text-align: center;
     font-style: italic;
+    font-family: 'Roboto Slab', serif;
+    font-size: 20px;
+    letter-spacing: 0.15px;
   }
 `
 
