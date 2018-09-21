@@ -23,7 +23,7 @@ const StyledCanvas = styled.canvas`
 
 class PageHeader extends React.Component {
   static propTypes = {
-    id: PropTypes.string,
+    QRUrl: PropTypes.string,
     children: PropTypes.node
   }
 
@@ -32,20 +32,20 @@ class PageHeader extends React.Component {
   }
 
   render() {
-    const { children, id } = this.props
+    const { children, QRUrl } = this.props
 
     return (
       <StyledHeader>
         <StyledContainer>{children}</StyledContainer>
-        {id && <StyledCanvas innerRef={node => (this.canvas = node)} />}
+        {QRUrl && <StyledCanvas innerRef={node => (this.canvas = node)} />}
       </StyledHeader>
     )
   }
 
   createQRCode = () => {
-    const { id } = this.props
-    if (!id) return null
-    QRCode.toCanvas(this.canvas, `${localIP}/gap/${id}`, {
+    const { QRUrl } = this.props
+    if (!QRUrl) return null
+    QRCode.toCanvas(this.canvas, `${localIP}/${QRUrl}`, {
       errorCorrectionLevel: 'Q'
     })
   }

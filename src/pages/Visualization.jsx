@@ -46,7 +46,7 @@ class Visualization extends React.Component {
 
   render() {
     const { data } = this.state
-    const { gaps } = this.props
+    const { gaps, concepts } = this.props
 
     return (
       <SinglePage>
@@ -66,6 +66,16 @@ class Visualization extends React.Component {
             {Object.values(gaps).map(gap => (
               <li key={gap.id}>
                 <Link to={`/gap/${gap.id}`}>{gap.title}</Link>
+              </li>
+            ))}
+          </ul>
+        )}
+        <h4>Links to concepts:</h4>
+        {concepts && (
+          <ul>
+            {Object.values(concepts).map(concept => (
+              <li key={concept.id}>
+                <Link to={`/concept/${concept.id}`}>{concept.title}</Link>
               </li>
             ))}
           </ul>

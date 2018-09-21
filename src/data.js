@@ -54,7 +54,6 @@ export default {
       description: 'How can we deliver food faster',
       quantification: {
         unit: 'time to deliver a standard bag of food',
-
         measurement: 'measure time from order to deliver, calculate difference',
         worst: 'Several days',
         goal: '1 hour from order',
@@ -86,7 +85,6 @@ export default {
       description: 'magnam',
       quantification: {
         unit: 'time to print 1cm2x1mm sample',
-
         measurement:
           'measure time at print start and finish, calculate difference',
         worst: 'Several hours (Extrusion, LIFT, DLBP)',
@@ -134,20 +132,10 @@ export default {
           'External partners'
         ]
       },
-      illustrations: [
-        {
-          title: 'Important image',
-          fileName: 'Picture1.png'
-        },
-        {
-          title: 'One more important image',
-          fileName: 'Picture2.png'
-        },
-        {
-          title: 'One small but important image',
-          fileName: 'Picture3.png'
-        }
-      ],
+      image: {
+        caption: 'Image caption',
+        fileName: 'brighter_concept_1.png'
+      },
       links: [
         {
           displayName: 'Brighter EU Application Part B section 1-3',
@@ -169,6 +157,7 @@ export default {
       revisitDate: '',
       dueDate: '2017-09-20',
       viewpoint: 'Strategy',
+      title: 'Brighter2',
       subTitle: 'BIOPRINTING BY LIGHT-SHEET LITHOGRAPHY...',
       description: 'Two pattern modulated light-sheet sources...',
       complexity: {
@@ -184,20 +173,10 @@ export default {
           'External partners'
         ]
       },
-      illustrations: [
-        {
-          title: 'Important image',
-          fileName: 'Picture1.png'
-        },
-        {
-          title: 'One more important image',
-          fileName: 'Picture2.png'
-        },
-        {
-          title: 'One small but important image',
-          fileName: 'Picture3.png'
-        }
-      ],
+      image: {
+        caption: 'Image caption',
+        fileName: 'brighter_concept_1.png'
+      },
       links: [
         {
           displayName: 'Brighter EU Application Part B section 1-3',

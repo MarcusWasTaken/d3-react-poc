@@ -14,7 +14,7 @@ class GapPage extends React.Component {
     const { gap, match } = this.props
     return (
       <ReportPage>
-        <PageHeader id={match.params.id}>
+        <PageHeader QRUrl={`gap/${match.params.id}`}>
           <PageTitle>{gap.title.toUpperCase()} gap</PageTitle>
           <PageDateTitle
             creationDate={gap.creationDate}
