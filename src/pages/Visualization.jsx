@@ -6,6 +6,9 @@ import Graph from 'containers/Graph'
 import AxisSelect from 'containers/graph/AxisSelect'
 import { getGaps, getConcepts } from 'containers/app/selectors'
 import { localIP } from 'config'
+import SinglePage from 'components/SinglePage'
+import PageHeader from 'components/singlePage/PageHeader'
+import PageTitle from 'components/singlePage/PageTitle'
 
 const datasets = [
   [
@@ -46,7 +49,11 @@ class Visualization extends React.Component {
     const { gaps } = this.props
 
     return (
-      <React.Fragment>
+      <SinglePage>
+        <PageHeader>
+          <PageTitle>GapMap</PageTitle>
+        </PageHeader>
+
         <AxisSelect />
         <Graph width={800} height={500} data={data} margin={margin} />
         <button onClick={this.handleClick}>Switch dataset</button>
@@ -63,7 +70,7 @@ class Visualization extends React.Component {
             ))}
           </ul>
         )}
-      </React.Fragment>
+      </SinglePage>
     )
   }
 

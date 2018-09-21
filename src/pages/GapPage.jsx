@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { getGaps } from 'containers/app/selectors'
-import SinglePage from 'components/SinglePage'
+import ReportPage from 'components/ReportPage'
 import PageHeader from 'components/singlePage/PageHeader'
 import PageTitle from 'components/singlePage/PageTitle'
 import PageFigure from 'components/singlePage/PageFigure'
@@ -13,7 +13,7 @@ class GapPage extends React.Component {
   render() {
     const { gap, match } = this.props
     return (
-      <SinglePage>
+      <ReportPage>
         <PageHeader id={match.params.id}>
           <PageTitle>{gap.title.toUpperCase()} gap</PageTitle>
           <PageDateTitle
@@ -32,7 +32,7 @@ class GapPage extends React.Component {
           </PageFigure>
         )}
         <PageComments>PageComments.jsx</PageComments>
-      </SinglePage>
+      </ReportPage>
     )
   }
 }
