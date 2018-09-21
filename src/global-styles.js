@@ -15,12 +15,13 @@ injectGlobal`
     margin: 0;
     padding: 0;
     font-size: 1.6rem;
-    /* font-family: Arial,sans-serif; */
-    /* font-family: 'Roboto', sans-serif;
-    font-weight: 400; */
-    background-color: #fafafa;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
     color: rgba(0,0,0,.87);
-    overflow: hidden;
+
+    @media screen {
+      background-color: #fafafa;
+    }
   }
 
   #root {

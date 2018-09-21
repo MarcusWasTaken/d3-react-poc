@@ -28,12 +28,10 @@ export default {
           'The global transplantation market estimated to reach $51.0 bill...',
         value: 1000000
       },
-      illustrations: [
-        {
-          title: 'Importand image',
-          fileName: 'image.png'
-        }
-      ],
+      image: {
+        caption: 'Skin structure and cell components.',
+        fileName: 'brighter_gap_1.png'
+      },
       links: [
         {
           displayName: 'Brighter EU Application Part B section 1-3',
@@ -67,12 +65,6 @@ export default {
         text: 'This has huge potential if done right',
         value: 20000000
       },
-      illustrations: [
-        {
-          title: 'Importand image',
-          fileName: 'image.png'
-        }
-      ],
       links: [
         {
           displayName: 'Brighter EU Application Part B section 1-3',
@@ -107,12 +99,6 @@ export default {
           'Two pattern modulated light-sheet sources placed at 90º will be combined spatially-confined energy doses (visible light, near λ = 405 nm) that will trigger local crosslinking in a sensitised hydrogel (exists today)',
         value: 750000
       },
-      illustrations: [
-        {
-          title: 'ipsam',
-          fileName: 'testImage.png'
-        }
-      ],
       links: [
         {
           displayName: 'Cool link',
