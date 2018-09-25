@@ -37,11 +37,11 @@ const margin = { top: 10, right: 10, bottom: 50, left: 50 }
 class Visualization extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { data: datasets[0], dataset: 0 }
+    this.state = { data: datasets[0], dataset: 0, width: 800, height: 500 }
   }
 
   render() {
-    const { data } = this.state
+    const { data, width, height } = this.state
     const { gaps, concepts } = this.props
 
     return (
@@ -51,8 +51,9 @@ class Visualization extends React.Component {
         </PageHeader>
 
         <AxisSelect />
-        <Graph width={800} height={500} data={data} margin={margin} />
+        <Graph width={width} height={height} data={data} margin={margin} />
         <button onClick={this.handleClick}>Switch dataset</button>
+        <button onClick={this.handleSizeChange}>Change size</button>
         <h4>Links to gaps:</h4>
         {gaps && (
           <ul>
@@ -85,6 +86,15 @@ class Visualization extends React.Component {
     this.setState({
       data: datasets[dataset],
       dataset
+    })
+  }
+
+  handleSizeChange = () => {
+    const { width, height } = this.state
+
+    this.setState({
+      width: width + 50,
+      height: height + 50
     })
   }
 }

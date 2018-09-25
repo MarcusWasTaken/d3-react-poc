@@ -48,13 +48,16 @@ class Graph extends React.Component {
   }
 
   updateGraph = () => {
-    const { data } = this.props
+    const { data, width, margin, height } = this.props
 
-    updateScale(this.xScale, data, 'gpa')
-    updateScale(this.yScale, data, 'height')
+    const modifiedWidth = width - margin.left - margin.right
+    const modifiedHeight = height - margin.top - margin.bottom
 
-    updateXAxis(this.xAxis, this.xScale)
-    updateYAxis(this.yAxis, this.yScale)
+    updateScale(this.xScale, data, 'gpa', [0, modifiedWidth])
+    updateScale(this.yScale, data, 'height', [modifiedHeight, 0])
+
+    updateXAxis(this.xAxis, modifiedHeight, this.xScale)
+    updateYAxis(this.yAxis, modifiedWidth, this.yScale)
 
     const circles = selectCircles(this.diagram, data)
     removeCircles(circles, this.yScale)
