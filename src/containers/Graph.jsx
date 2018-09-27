@@ -1,4 +1,5 @@
 import React from 'react'
+import debounce from 'lodash/debounce'
 import {
   selectCircles,
   updateCircles,
@@ -15,12 +16,17 @@ import {
 } from 'containers/graph/axis'
 
 class Graph extends React.Component {
+  constructor(props) {
+    super(props)
+    this.debouncedUpdate = debounce(this.updateGraph, 750)
+  }
+
   componentDidMount() {
     this.createGraph()
   }
 
   componentDidUpdate() {
-    this.updateGraph()
+    this.debouncedUpdate()
   }
 
   render() {

@@ -12,6 +12,8 @@ import PageDateTitle from 'components/singlePage/PageDateTitle'
 class GapPage extends React.Component {
   render() {
     const { gap, match } = this.props
+    if (!gap) return null
+
     return (
       <ReportPage>
         <PageHeader QRUrl={`gap/${match.params.id}`}>
@@ -22,15 +24,17 @@ class GapPage extends React.Component {
           />
         </PageHeader>
         <GapPageInfo gap={gap} />
-        {gap.image && (
-          <PageFigure>
+        {gap.illustrations.map(illustration => (
+          <PageFigure key={illustration.fileName}>
             <img
-              src={`${process.env.PUBLIC_URL}/images/${gap.image.fileName}`}
-              alt={gap.image.caption}
+              src={`${process.env.PUBLIC_URL}/images/${illustration.fileName}`}
+              alt={illustration.title}
             />
-            {gap.image.caption && <figcaption>{gap.image.caption}</figcaption>}
+            {illustration.caption && (
+              <figcaption>{illustration.caption}</figcaption>
+            )}
           </PageFigure>
-        )}
+        ))}
         <PageComments>PageComments.jsx</PageComments>
       </ReportPage>
     )
@@ -38,7 +42,7 @@ class GapPage extends React.Component {
 }
 
 const mapStateToProps = (state, props) => ({
-  gap: getGaps(state)[props.match.params.id]
+  gap: getGaps(state).find(gap => gap.id == props.match.params.id)
 })
 
 export default connect(mapStateToProps)(GapPage)

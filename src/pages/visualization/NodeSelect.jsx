@@ -61,8 +61,8 @@ class NodeSelect extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  gaps: Object.values(getGaps(state)),
-  concepts: Object.values(getConcepts(state))
+  gaps: getGaps(state),
+  concepts: getConcepts(state)
 })
 
 export default connect(

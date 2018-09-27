@@ -12,8 +12,12 @@ class SelectedNodes extends React.Component {
   render() {
     const { gaps, concepts, selectedGaps, selectedConcepts } = this.props
 
-    const mappedGaps = selectedGaps.map(id => gaps[id])
-    const mappedConcepts = selectedConcepts.map(id => concepts[id])
+    const mappedGaps = selectedGaps
+      .map(id => gaps.find(gap => gap.id == id))
+      .filter(o => !!o)
+    const mappedConcepts = selectedConcepts
+      .map(id => concepts.find(concept => concept.id == id))
+      .filter(o => !!o)
 
     return (
       <React.Fragment>

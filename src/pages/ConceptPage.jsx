@@ -12,6 +12,8 @@ import PageDateTitle from 'components/singlePage/PageDateTitle'
 class ConceptPage extends React.Component {
   render() {
     const { concept, match } = this.props
+    if (!concept) return null
+
     return (
       <ReportPage>
         <PageHeader QRUrl={`concept/${match.params.id}`}>
@@ -22,17 +24,17 @@ class ConceptPage extends React.Component {
           />
         </PageHeader>
         <ConceptPageInfo concept={concept} />
-        {concept.image && (
-          <PageFigure>
+        {concept.illustrations.map(illustration => (
+          <PageFigure key={illustration.fileName}>
             <img
-              src={`${process.env.PUBLIC_URL}/images/${concept.image.fileName}`}
-              alt={concept.image.caption}
+              src={`${process.env.PUBLIC_URL}/images/${illustration.fileName}`}
+              alt={illustration.title}
             />
-            {concept.image.caption && (
-              <figcaption>{concept.image.caption}</figcaption>
+            {illustration.caption && (
+              <figcaption>{illustration.caption}</figcaption>
             )}
           </PageFigure>
-        )}
+        ))}
         <PageComments>PageComments.jsx</PageComments>
       </ReportPage>
     )
@@ -40,7 +42,9 @@ class ConceptPage extends React.Component {
 }
 
 const mapStateToProps = (state, props) => ({
-  concept: getConcepts(state)[props.match.params.id]
+  concept: getConcepts(state).find(
+    concept => concept.id == props.match.params.id
+  )
 })
 
 export default connect(mapStateToProps)(ConceptPage)

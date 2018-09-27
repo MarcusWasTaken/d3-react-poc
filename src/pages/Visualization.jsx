@@ -55,9 +55,9 @@ class Visualization extends React.Component {
         <button onClick={this.handleClick}>Switch dataset</button>
         <button onClick={this.handleSizeChange}>Change size</button>
         <h4>Links to gaps:</h4>
-        {gaps && (
+        {gaps.length > 0 && (
           <ul>
-            {Object.values(gaps).map(gap => (
+            {gaps.map(gap => (
               <li key={gap.id}>
                 <Link to={`/gap/${gap.id}`}>{gap.title}</Link>
               </li>
@@ -65,9 +65,9 @@ class Visualization extends React.Component {
           </ul>
         )}
         <h4>Links to concepts:</h4>
-        {concepts && (
+        {concepts.length > 0 && (
           <ul>
-            {Object.values(concepts).map(concept => (
+            {concepts.map(concept => (
               <li key={concept.id}>
                 <Link to={`/concept/${concept.id}`}>{concept.title}</Link>
               </li>

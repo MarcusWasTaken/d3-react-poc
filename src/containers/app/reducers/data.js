@@ -1,21 +1,17 @@
 import { combineReducers } from 'redux'
+import { SET_DATA } from 'containers/app/constants'
 
-const gaps = (state = {}, action) => {
-  return state
-}
-const concepts = (state = {}, action) => {
-  return state
-}
-const gapRelations = (state = {}, action) => {
-  return state
-}
-const gapConceptRelations = (state = {}, action) => {
+const createSubsetReducer = dataKey => (state = [], action) => {
+  if (action.type === SET_DATA) {
+    return action.data[dataKey]
+  }
+
   return state
 }
 
 export default combineReducers({
-  gaps,
-  concepts,
-  gapRelations,
-  gapConceptRelations
+  gaps: createSubsetReducer('gaps'),
+  concepts: createSubsetReducer('concepts'),
+  gapRelations: createSubsetReducer('gapRelations'),
+  gapConceptRelations: createSubsetReducer('gapConceptRelations')
 })

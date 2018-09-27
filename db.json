@@ -15,26 +15,14 @@
           "title": "Brighter",
           "subTitle": "",
           "description": "Testing",
-          "quantification": [
-            {
-              "unit": "time to print 1cm2x1mm sample"
-            },
-            {
-              "measurement": "measure time at print start and finish, calculate difference"
-            },
-            {
-              "worst": "Several hours (Extrusion, LIFT, DLBP)"
-            },
-            {
-              "goal": "<10 minutes (BRIGHTER)"
-            },
-            {
-              "best": "30 minutes (Inkjet, SLT)"
-            },
-            {
-              "current": "n/a"
-            }
-          ],
+          "quantification": {
+            "unit": "time to print 1cm2x1mm sample",
+            "measurement": "measure time at print start and finish, calculate difference",
+            "worst": "Several hours (Extrusion, LIFT, DLBP)",
+            "goal": "<10 minutes (BRIGHTER)",
+            "best": "30 minutes (Inkjet, SLT)",
+            "current": "n/a"
+          },
           "value": {
             "text": "The global transplantation market estimated to reach $51.0 bill...",
             "value": 7000000
@@ -42,7 +30,8 @@
           "illustrations": [
             {
               "title": "Importand image",
-              "fileName": "image.png"
+              "fileName": "brighter_gap_1.png",
+              "caption": "Skin structure and cell components."
             }
           ],
           "links": [
@@ -63,26 +52,14 @@
           "title": "Brighter",
           "subTitle": "BIOPRINTING BY LIGHT-SHEET LITHOGRAPHY...",
           "description": "How can we improve pick & place? This is problematic because",
-          "quantification": [
-            {
-              "unit": "time to print 1cm2x1mm sample"
-            },
-            {
-              "measurement": "measure time at print start and finish, calculate difference"
-            },
-            {
-              "worst": "Several hours (Extrusion, LIFT, DLBP)"
-            },
-            {
-              "goal": ""
-            },
-            {
-              "best": "30 minutes (Inkjet, SLT)"
-            },
-            {
-              "current": "n/a"
-            }
-          ],
+          "quantification": {
+            "unit": "time to print 1cm2x1mm sample",
+            "measurement": "measure time at print start and finish, calculate difference",
+            "worst": "Several hours (Extrusion, LIFT, DLBP)",
+            "goal": "",
+            "best": "30 minutes (Inkjet, SLT)",
+            "current": "n/a"
+          },
           "value": {
             "text": "The global transplantation market estimated to reach $51.0 bill...",
             "value": 10000000
@@ -90,7 +67,8 @@
           "illustrations": [
             {
               "title": "Importand image",
-              "fileName": "image.png"
+              "fileName": "brighter_gap_1.png",
+              "caption": "Skin structure and cell components."
             }
           ],
           "links": [
@@ -117,26 +95,14 @@
           "title": "Reinvent food delivary",
           "subTitle": "",
           "description": "How can we deliver food faster",
-          "quantification": [
-            {
-              "unit": "time to deliver a standard bag of food"
-            },
-            {
-              "measurement": "measure time from order to deliver, calculate difference"
-            },
-            {
-              "worst": "Several days"
-            },
-            {
-              "goal": "1 hour from order"
-            },
-            {
-              "best": "30 minutes"
-            },
-            {
-              "current": "n/a"
-            }
-          ],
+          "quantification": {
+            "unit": "time to deliver a standard bag of food",
+            "measurement": "measure time from order to deliver, calculate difference",
+            "worst": "Several days",
+            "goal": "1 hour from order",
+            "best": "30 minutes",
+            "current": "n/a"
+          },
           "value": {
             "text": "This has huge potential if done right",
             "value": 20000000
@@ -144,7 +110,8 @@
           "illustrations": [
             {
               "title": "Importand image",
-              "fileName": "image.png"
+              "fileName": "image.png",
+              "caption": ""
             }
           ],
           "links": [
@@ -170,26 +137,14 @@
           "viewpoint": "Strategy",
           "title": "How can we eat more burgers faster",
           "description": "magnam",
-          "quantification": [
-            {
-              "unit": "time to print 1cm2x1mm sample"
-            },
-            {
-              "measurement": "measure time at print start and finish, calculate difference"
-            },
-            {
-              "worst": "Several hours (Extrusion, LIFT, DLBP)"
-            },
-            {
-              "goal": "<10 minutes (BRIGHTER)"
-            },
-            {
-              "best": "30 minutes (Inkjet, SLT)"
-            },
-            {
-              "current": "n/a"
-            }
-          ],
+          "quantification": {
+            "unit": "time to print 1cm2x1mm sample",
+            "measurement": "measure time at print start and finish, calculate difference",
+            "worst": "Several hours (Extrusion, LIFT, DLBP)",
+            "goal": "<10 minutes (BRIGHTER)",
+            "best": "30 minutes (Inkjet, SLT)",
+            "current": "n/a"
+          },
           "value": {
             "text": "Two pattern modulated light-sheet sources placed at 90º will be combined spatially-confined energy doses (visible light, near λ = 405 nm) that will trigger local crosslinking in a sensitised hydrogel (exists today)",
             "value": 750000
@@ -197,7 +152,8 @@
           "illustrations": [
             {
               "title": "ipsam",
-              "fileName": "testImage.png"
+              "fileName": "testImage.png",
+              "caption": ""
             }
           ],
           "links": [
@@ -242,15 +198,8 @@
           "illustrations": [
             {
               "title": "Important image",
-              "fileName": "Picture1.png"
-            },
-            {
-              "title": "One more important image",
-              "fileName": "Picture2.png"
-            },
-            {
-              "title": "One small but important image",
-              "fileName": "Picture3.png"
+              "fileName": "brighter_concept_1.png",
+              "caption": ""
             }
           ],
           "links": [
@@ -296,15 +245,8 @@
           "illustrations": [
             {
               "title": "Important image",
-              "fileName": "Picture1.png"
-            },
-            {
-              "title": "One more important image",
-              "fileName": "Picture2.png"
-            },
-            {
-              "title": "One small but important image",
-              "fileName": "Picture3.png"
+              "fileName": "Picture1.png",
+              "caption": ""
             }
           ],
           "links": [
@@ -350,15 +292,8 @@
           "illustrations": [
             {
               "title": "Important image",
-              "fileName": "Picture1.png"
-            },
-            {
-              "title": "One more important image",
-              "fileName": "Picture2.png"
-            },
-            {
-              "title": "One small but important image",
-              "fileName": "Picture3.png"
+              "fileName": "Picture1.png",
+              "caption": ""
             }
           ],
           "links": [
@@ -442,9 +377,7 @@
           "concept": 6,
           "trl": 4,
           "difficulty": 8,
-          "questions": [
-            "What are the questions we need to answer?"
-          ],
+          "questions": ["What are the questions we need to answer?"],
           "links": [
             {
               "displayName": "Brighter EU Application Part B section 4-6",
