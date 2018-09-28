@@ -7,7 +7,9 @@ const store = configureStore()
 
 ReactDOM.render(<Root store={store} />, document.getElementById('root'))
 
+// @ts-ignore
 if (module.hot) {
+  // @ts-ignore
   module.hot.accept('./Root', () => {
     ReactDOM.render(<Root store={store} />, document.getElementById('root'))
   })

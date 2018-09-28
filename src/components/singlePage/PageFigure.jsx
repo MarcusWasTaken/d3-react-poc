@@ -1,10 +1,7 @@
 import styled from 'styled-components'
 
 const PageFigure = styled.figure`
-  border: 2px solid #0086bf;
-  padding: 16px;
-  margin: 0;
-  grid-area: figure;
+  margin: 16px;
 
   img {
     display: block;

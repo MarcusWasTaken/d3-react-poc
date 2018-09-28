@@ -4,9 +4,9 @@ import { getGaps, getConcepts } from 'containers/app/selectors'
 import { selectNodes } from 'containers/app/actions'
 
 class NodeSelect extends React.Component {
-  componentWillUnmount() {
-    this.handleClear()
-  }
+  // componentWillUnmount() {
+  //   this.handleClear()
+  // }
 
   render() {
     const { gaps, concepts } = this.props
@@ -61,8 +61,8 @@ class NodeSelect extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  gaps: Object.values(getGaps(state)),
-  concepts: Object.values(getConcepts(state))
+  gaps: getGaps(state),
+  concepts: getConcepts(state)
 })
 
 export default connect(

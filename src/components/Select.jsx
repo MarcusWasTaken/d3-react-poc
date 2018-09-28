@@ -7,7 +7,7 @@ class Select extends React.PureComponent {
     return (
       <select value={value} onChange={onChange}>
         <option disabled value={''}>
-          -- select an option --
+          select an option:
         </option>
         {options.map(option => (
           <option key={option.value} value={option.value}>

@@ -1,9 +1,7 @@
 import styled from 'styled-components'
 
 const PageInfo = styled.section`
-  border: 2px solid #0086bf;
-  padding: 16px;
-  grid-area: info;
+  margin: 16px;
 
   dl {
     margin: 0;

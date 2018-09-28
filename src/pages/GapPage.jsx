@@ -8,10 +8,14 @@ import PageFigure from 'components/singlePage/PageFigure'
 import PageComments from 'components/singlePage/PageComments'
 import GapPageInfo from './gapPage/GapPageInfo'
 import PageDateTitle from 'components/singlePage/PageDateTitle'
+import Legend from 'components/Legend'
+import PageIllustrations from 'components/singlePage/PageIllustrations'
 
 class GapPage extends React.Component {
   render() {
     const { gap, match } = this.props
+    if (!gap) return null
+
     return (
       <ReportPage>
         <PageHeader QRUrl={`gap/${match.params.id}`}>
@@ -22,23 +26,32 @@ class GapPage extends React.Component {
           />
         </PageHeader>
         <GapPageInfo gap={gap} />
-        {gap.image && (
-          <PageFigure>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/${gap.image.fileName}`}
-              alt={gap.image.caption}
-            />
-            {gap.image.caption && <figcaption>{gap.image.caption}</figcaption>}
-          </PageFigure>
+        {gap.illustrations.length > 0 && (
+          <PageIllustrations>
+            <Legend>Illustrations</Legend>
+            {gap.illustrations.map(illustration => (
+              <PageFigure key={illustration.fileName}>
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/${
+                    illustration.fileName
+                  }`}
+                  alt={illustration.title}
+                />
+                {illustration.caption && (
+                  <figcaption>{illustration.caption}</figcaption>
+                )}
+              </PageFigure>
+            ))}
+          </PageIllustrations>
         )}
-        <PageComments>PageComments.jsx</PageComments>
+        {/* <PageComments>PageComments.jsx</PageComments> */}
       </ReportPage>
     )
   }
 }
 
 const mapStateToProps = (state, props) => ({
-  gap: getGaps(state)[props.match.params.id]
+  gap: getGaps(state).find(gap => gap.id == props.match.params.id)
 })
 
 export default connect(mapStateToProps)(GapPage)
