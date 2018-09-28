@@ -4,9 +4,9 @@ import { getGaps, getConcepts } from 'containers/app/selectors'
 import { selectNodes } from 'containers/app/actions'
 
 class NodeSelect extends React.Component {
-  componentWillUnmount() {
-    this.handleClear()
-  }
+  // componentWillUnmount() {
+  //   this.handleClear()
+  // }
 
   render() {
     const { gaps, concepts } = this.props

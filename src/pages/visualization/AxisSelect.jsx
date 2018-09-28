@@ -1,12 +1,19 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import styled from 'styled-components'
 import Select from 'components/Select'
 import {
   setXAxis,
   setGapYAxis,
   setConceptYAxis
 } from 'containers/graph/actions'
-import { getXAxis, getGapYAxis, getConceptYAxis } from './selectors'
+import {
+  getXAxis,
+  getGapYAxis,
+  getConceptYAxis
+} from 'containers/graph/selectors'
+import Fieldset from 'components/Fieldset'
+import Legend from 'components/Legend'
 
 const axisOptions = [
   { value: 'value', text: 'Value' },
@@ -14,37 +21,47 @@ const axisOptions = [
   { value: 'owner', text: 'Owner' }
 ]
 
+const AxisGroup = styled.div`
+  padding: 0 16px;
+  margin: 16px 0;
+`
+
+const AxisTitle = styled.div`
+  font-weight: 500;
+`
+
 class AxisSelect extends React.Component {
   render() {
     const { xAxis, gapYAxis, conceptYAxis } = this.props
 
     return (
-      <div>
-        <span>
-          <strong>X Axis: </strong>
+      <Fieldset>
+        <Legend>Axis selectors</Legend>
+        <AxisGroup>
+          <AxisTitle>Gap Y</AxisTitle>
           <Select
-            value={xAxis || ''}
-            options={axisOptions}
-            onChange={this.onXAxisChange}
-          />
-        </span>
-        <span>
-          <strong>Gap Y Axis: </strong>
-          <Select
-            value={gapYAxis || ''}
+            value={gapYAxis || 'value'}
             options={axisOptions}
             onChange={this.onGapYAxisChange}
           />
-        </span>
-        <span>
-          <strong>Concept Y Axis: </strong>
+        </AxisGroup>
+        <AxisGroup>
+          <AxisTitle>Concept Y</AxisTitle>
           <Select
-            value={conceptYAxis || ''}
+            value={conceptYAxis || 'value'}
             options={axisOptions}
             onChange={this.onConceptYAxisChange}
           />
-        </span>
-      </div>
+        </AxisGroup>
+        <AxisGroup>
+          <AxisTitle>Shared X</AxisTitle>
+          <Select
+            value={xAxis || 'value'}
+            options={axisOptions}
+            onChange={this.onXAxisChange}
+          />
+        </AxisGroup>
+      </Fieldset>
     )
   }
 

@@ -8,6 +8,8 @@ import PageFigure from 'components/singlePage/PageFigure'
 import PageComments from 'components/singlePage/PageComments'
 import ConceptPageInfo from './conceptPage/ConceptPageInfo'
 import PageDateTitle from 'components/singlePage/PageDateTitle'
+import PageIllustrations from 'components/singlePage/PageIllustrations'
+import Legend from 'components/Legend'
 
 class ConceptPage extends React.Component {
   render() {
@@ -24,18 +26,26 @@ class ConceptPage extends React.Component {
           />
         </PageHeader>
         <ConceptPageInfo concept={concept} />
-        {concept.illustrations.map(illustration => (
-          <PageFigure key={illustration.fileName}>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/${illustration.fileName}`}
-              alt={illustration.title}
-            />
-            {illustration.caption && (
-              <figcaption>{illustration.caption}</figcaption>
-            )}
-          </PageFigure>
-        ))}
-        <PageComments>PageComments.jsx</PageComments>
+        {concept.illustrations.length > 0 && (
+          <PageIllustrations>
+            <Legend>Illustrations</Legend>
+            {concept.illustrations.map(illustration => (
+              <PageFigure key={illustration.fileName}>
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/${
+                    illustration.fileName
+                  }`}
+                  alt={illustration.title}
+                />
+                {illustration.caption && (
+                  <figcaption>{illustration.caption}</figcaption>
+                )}
+              </PageFigure>
+            ))}
+          </PageIllustrations>
+        )}
+
+        {/* <PageComments>PageComments.jsx</PageComments> */}
       </ReportPage>
     )
   }

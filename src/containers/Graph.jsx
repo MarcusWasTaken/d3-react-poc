@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import debounce from 'lodash/debounce'
 import {
   selectCircles,
@@ -14,62 +15,76 @@ import {
   updateXAxis,
   updateYAxis
 } from 'containers/graph/axis'
+import GraphClass from 'graph/Graph'
+import { getData } from './app/selectors'
+import validateData from 'utils/validateData'
+
+const graph = new GraphClass()
 
 class Graph extends React.Component {
   constructor(props) {
     super(props)
-    this.debouncedUpdate = debounce(this.updateGraph, 750)
+    this.debouncedDraw = debounce(this.drawGraph, 0)
+    this.state = {
+      graphCreated: false
+    }
   }
 
   componentDidMount() {
-    this.createGraph()
+    this.debouncedDraw()
   }
 
   componentDidUpdate() {
-    this.debouncedUpdate()
+    this.debouncedDraw()
   }
 
   render() {
-    const { width, height } = this.props
+    const { width, height, data } = this.props
 
     return (
       <svg width={width} height={height} ref={node => (this.rootNode = node)} />
     )
   }
 
+  drawGraph = () => {
+    const { graphCreated } = this.state
+    const { data } = this.props
+
+    if (!validateData(data)) return false
+
+    if (graphCreated) {
+      this.updateGraph()
+    } else {
+      this.createGraph()
+      this.setState({
+        graphCreated: true
+      })
+    }
+  }
+
   createGraph = () => {
-    const { data, width, height, margin } = this.props
+    const { data, width, height } = this.props
 
-    const modifiedWidth = width - margin.left - margin.right
-    const modifiedHeight = height - margin.top - margin.bottom
-
-    this.diagram = createDiagram(this.rootNode, margin)
-    this.xScale = createLinearScale(data, 'gpa', [0, modifiedWidth])
-    this.yScale = createLinearScale(data, 'height', [modifiedHeight, 0])
-    this.xAxis = createXAxis(this.diagram, modifiedHeight, this.xScale)
-    this.yAxis = createYAxis(this.diagram, modifiedWidth, this.yScale)
-
-    const circles = selectCircles(this.diagram, data)
-    createCircles(circles, this.xScale, this.yScale)
+    graph.create(this.rootNode, width, height, data, {
+      xDimension: 'dueDate',
+      yGapDimension: 'viewpoint',
+      yConceptDimension: 'viewpoint'
+    })
   }
 
   updateGraph = () => {
-    const { data, width, margin, height } = this.props
+    const { data } = this.props
 
-    const modifiedWidth = width - margin.left - margin.right
-    const modifiedHeight = height - margin.top - margin.bottom
-
-    updateScale(this.xScale, data, 'gpa', [0, modifiedWidth])
-    updateScale(this.yScale, data, 'height', [modifiedHeight, 0])
-
-    updateXAxis(this.xAxis, modifiedHeight, this.xScale)
-    updateYAxis(this.yAxis, modifiedWidth, this.yScale)
-
-    const circles = selectCircles(this.diagram, data)
-    removeCircles(circles, this.yScale)
-    updateCircles(circles, this.xScale, this.yScale)
-    createCircles(circles, this.xScale, this.yScale)
+    graph.update(data, {
+      xDimension: 'dueDate',
+      yGapDimension: 'viewpoint',
+      yConceptDimension: 'viewpoint'
+    })
   }
 }
 
-export default Graph
+const mapStateToProps = state => ({
+  data: getData(state)
+})
+
+export default connect(mapStateToProps)(Graph)

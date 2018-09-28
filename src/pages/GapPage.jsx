@@ -8,6 +8,8 @@ import PageFigure from 'components/singlePage/PageFigure'
 import PageComments from 'components/singlePage/PageComments'
 import GapPageInfo from './gapPage/GapPageInfo'
 import PageDateTitle from 'components/singlePage/PageDateTitle'
+import Legend from 'components/Legend'
+import PageIllustrations from 'components/singlePage/PageIllustrations'
 
 class GapPage extends React.Component {
   render() {
@@ -24,18 +26,25 @@ class GapPage extends React.Component {
           />
         </PageHeader>
         <GapPageInfo gap={gap} />
-        {gap.illustrations.map(illustration => (
-          <PageFigure key={illustration.fileName}>
-            <img
-              src={`${process.env.PUBLIC_URL}/images/${illustration.fileName}`}
-              alt={illustration.title}
-            />
-            {illustration.caption && (
-              <figcaption>{illustration.caption}</figcaption>
-            )}
-          </PageFigure>
-        ))}
-        <PageComments>PageComments.jsx</PageComments>
+        {gap.illustrations.length > 0 && (
+          <PageIllustrations>
+            <Legend>Illustrations</Legend>
+            {gap.illustrations.map(illustration => (
+              <PageFigure key={illustration.fileName}>
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/${
+                    illustration.fileName
+                  }`}
+                  alt={illustration.title}
+                />
+                {illustration.caption && (
+                  <figcaption>{illustration.caption}</figcaption>
+                )}
+              </PageFigure>
+            ))}
+          </PageIllustrations>
+        )}
+        {/* <PageComments>PageComments.jsx</PageComments> */}
       </ReportPage>
     )
   }

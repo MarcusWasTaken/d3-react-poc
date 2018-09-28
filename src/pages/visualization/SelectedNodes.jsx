@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import {
   getSelectedGaps,
@@ -7,6 +8,12 @@ import {
   getGaps,
   getConcepts
 } from 'containers/app/selectors'
+import Fieldset from 'components/Fieldset'
+import Legend from 'components/Legend'
+
+const NodeItem = styled.p`
+  margin: 16px;
+`
 
 class SelectedNodes extends React.Component {
   render() {
@@ -22,24 +29,24 @@ class SelectedNodes extends React.Component {
     return (
       <React.Fragment>
         {mappedGaps.length > 0 && (
-          <div>
-            <h4>Selected gaps</h4>
+          <Fieldset>
+            <Legend>Selected gaps</Legend>
             {mappedGaps.map(gap => (
-              <p key={gap.id}>
+              <NodeItem key={gap.id}>
                 <Link to={`/gap/${gap.id}`}>{gap.title}</Link>
-              </p>
+              </NodeItem>
             ))}
-          </div>
+          </Fieldset>
         )}
         {mappedConcepts.length > 0 && (
-          <div>
-            <h4>Selected concepts</h4>
+          <Fieldset>
+            <Legend>Selected concepts</Legend>
             {mappedConcepts.map(concept => (
-              <p key={concept.id}>
+              <NodeItem key={concept.id}>
                 <Link to={`/concept/${concept.id}`}>{concept.title}</Link>
-              </p>
+              </NodeItem>
             ))}
-          </div>
+          </Fieldset>
         )}
       </React.Fragment>
     )
