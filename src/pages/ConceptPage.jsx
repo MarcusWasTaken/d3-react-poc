@@ -10,6 +10,7 @@ import ConceptPageInfo from './conceptPage/ConceptPageInfo'
 import PageDateTitle from 'components/singlePage/PageDateTitle'
 import PageIllustrations from 'components/singlePage/PageIllustrations'
 import Legend from 'components/Legend'
+import PageInfoWrapper from 'components/singlePage/PageInfoWrapper'
 
 class ConceptPage extends React.Component {
   render() {
@@ -25,7 +26,9 @@ class ConceptPage extends React.Component {
             changedDate={concept.changeDate}
           />
         </PageHeader>
-        <ConceptPageInfo concept={concept} />
+        <PageInfoWrapper>
+          <ConceptPageInfo concept={concept} />
+        </PageInfoWrapper>
         {concept.illustrations.length > 0 && (
           <PageIllustrations>
             <Legend>Illustrations</Legend>

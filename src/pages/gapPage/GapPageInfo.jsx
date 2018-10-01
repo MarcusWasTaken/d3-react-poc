@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import PageInfo from 'components/singlePage/PageInfo'
-import PageInfoFieldset from 'components/singlePage/PageInfoFieldset'
 import Legend from 'components/Legend'
+import Fieldset from 'components/Fieldset'
 
 class GapPageInfo extends React.PureComponent {
   static propTypes = {
@@ -22,7 +22,7 @@ class GapPageInfo extends React.PureComponent {
     } = this.props
 
     return (
-      <PageInfoFieldset>
+      <Fieldset>
         <Legend>Information</Legend>
         <PageInfo>
           <dl>
@@ -62,7 +62,7 @@ class GapPageInfo extends React.PureComponent {
             </dd>
           </dl>
         </PageInfo>
-      </PageInfoFieldset>
+      </Fieldset>
     )
   }
 }

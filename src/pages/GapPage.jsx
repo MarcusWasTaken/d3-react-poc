@@ -10,6 +10,8 @@ import GapPageInfo from './gapPage/GapPageInfo'
 import PageDateTitle from 'components/singlePage/PageDateTitle'
 import Legend from 'components/Legend'
 import PageIllustrations from 'components/singlePage/PageIllustrations'
+import PageInfoWrapper from 'components/singlePage/PageInfoWrapper'
+import GapRelations from './gapPage/GapRelations'
 
 class GapPage extends React.Component {
   render() {
@@ -25,7 +27,10 @@ class GapPage extends React.Component {
             changedDate={gap.changeDate}
           />
         </PageHeader>
-        <GapPageInfo gap={gap} />
+        <PageInfoWrapper>
+          <GapPageInfo gap={gap} />
+          <GapRelations />
+        </PageInfoWrapper>
         {gap.illustrations.length > 0 && (
           <PageIllustrations>
             <Legend>Illustrations</Legend>
