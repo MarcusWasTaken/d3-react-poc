@@ -18,6 +18,7 @@ import {
 import GraphClass from 'graph/Graph'
 import { getData } from './app/selectors'
 import validateData from 'utils/validateData'
+import { getAxes } from './graph/selectors'
 
 const graph = new GraphClass()
 
@@ -63,28 +64,29 @@ class Graph extends React.Component {
   }
 
   createGraph = () => {
-    const { data, width, height } = this.props
+    const { data, width, height, axes } = this.props
 
     graph.create(this.rootNode, width, height, data, {
-      xDimension: 'dueDate',
-      yGapDimension: 'viewpoint',
-      yConceptDimension: 'viewpoint'
+      xDimension: axes.x,
+      yGapDimension: axes.gapY,
+      yConceptDimension: axes.conceptY
     })
   }
 
   updateGraph = () => {
-    const { data } = this.props
+    const { data, axes } = this.props
 
     graph.update(data, {
-      xDimension: 'dueDate',
-      yGapDimension: 'viewpoint',
-      yConceptDimension: 'viewpoint'
+      xDimension: axes.x,
+      yGapDimension: axes.gapY,
+      yConceptDimension: axes.conceptY
     })
   }
 }
 
 const mapStateToProps = state => ({
-  data: getData(state)
+  data: getData(state),
+  axes: getAxes(state)
 })
 
 export default connect(mapStateToProps)(Graph)

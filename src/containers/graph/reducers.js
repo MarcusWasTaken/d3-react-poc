@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
-import axis from 'containers/graph/reducers/axis'
+import axes from 'containers/graph/reducers/axes'
 
 export default combineReducers({
-  axis
+  axes
 })

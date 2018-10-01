@@ -16,9 +16,10 @@ import Fieldset from 'components/Fieldset'
 import Legend from 'components/Legend'
 
 const axisOptions = [
-  { value: 'value', text: 'Value' },
-  { value: 'created', text: 'Created' },
-  { value: 'owner', text: 'Owner' }
+  { value: 'dueDate', text: 'Due date' },
+  { value: 'owner', text: 'Owner' },
+  { value: 'viewpoint', text: 'Viewpoint' },
+  { value: 'value', text: 'Value' }
 ]
 
 const AxisGroup = styled.div`
@@ -40,7 +41,7 @@ class AxisSelect extends React.Component {
         <AxisGroup>
           <AxisTitle>Gap Y</AxisTitle>
           <Select
-            value={gapYAxis || 'value'}
+            value={gapYAxis || ''}
             options={axisOptions}
             onChange={this.onGapYAxisChange}
           />
@@ -48,7 +49,7 @@ class AxisSelect extends React.Component {
         <AxisGroup>
           <AxisTitle>Concept Y</AxisTitle>
           <Select
-            value={conceptYAxis || 'value'}
+            value={conceptYAxis || ''}
             options={axisOptions}
             onChange={this.onConceptYAxisChange}
           />
@@ -56,7 +57,7 @@ class AxisSelect extends React.Component {
         <AxisGroup>
           <AxisTitle>Shared X</AxisTitle>
           <Select
-            value={xAxis || 'value'}
+            value={xAxis || ''}
             options={axisOptions}
             onChange={this.onXAxisChange}
           />

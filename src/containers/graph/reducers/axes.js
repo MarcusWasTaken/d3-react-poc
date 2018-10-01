@@ -5,21 +5,21 @@ import {
   SET_CONCEPT_Y_AXIS
 } from 'containers/graph/constants'
 
-const x = (state = null, action) => {
+const x = (state = 'dueDate', action) => {
   if (action.type === SET_X_AXIS) {
     return action.value
   }
   return state
 }
 
-const gapY = (state = null, action) => {
+const gapY = (state = 'owner', action) => {
   if (action.type === SET_GAP_Y_AXIS) {
     return action.value
   }
   return state
 }
 
-const conceptY = (state = null, action) => {
+const conceptY = (state = 'viewpoint', action) => {
   if (action.type === SET_CONCEPT_Y_AXIS) {
     return action.value
   }
