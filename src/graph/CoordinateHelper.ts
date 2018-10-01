@@ -163,6 +163,26 @@ export function getGapConceptRelationEndCoordinatesFunction(self) {
   }
 }
 
+export function getGapConceptRelationLabelCoordinatesFunction(self) {
+  var getStartCords = getGapConceptRelationStartCoordinatesFunction(self);
+  var getEndCords = getGapConceptRelationEndCoordinatesFunction(self);
+
+  return function (relation: GapConceptRelation) {
+    const startCords = getStartCords(relation)
+    const endCords = getEndCords(relation)
+
+    var middlePointX = (startCords.x1 + endCords.x2) / 2;
+    var middlePointY = (startCords.y1 + endCords.y2) / 2;
+
+    return {
+      x: middlePointX,
+      y: middlePointY
+    }
+  }
+}
+
+
+
 function saveOutsidePosition(xCord, yCord, id) {
   var current = outsideCoordinates.find(node => node.id === id);
   if (current == undefined) {

@@ -7,8 +7,6 @@ import { Concept } from 'models/concept/Concept'
 import { Gap } from 'models/gap/Gap'
 import Dimension from './Dimension'
 import { getCurrentDimensionValue, getSelectedNodeIds } from './DimensionHelper'
-// import { RenderInfoDisplay } from './RenderInfoDisplay'
-import { GraphDataStore } from '../models/GraphDataStore'
 import { GraphDataHolder } from './GraphDataHolder'
 import {
   getCoordinatesFunction,
@@ -17,6 +15,7 @@ import {
   getGapRelationEndCoordinatesFunction,
   getGapConceptRelationStartCoordinatesFunction,
   getGapConceptRelationEndCoordinatesFunction,
+  getGapConceptRelationLabelCoordinatesFunction,
   outsideGapXCord,
   outsideConceptXCord,
   outsideCoordinates
@@ -28,7 +27,6 @@ export interface GraphData {
   gapRelations: GapRelation[]
   gapConceptRelations: GapConceptRelation[]
 }
-
 export default class Graph {
   data: GraphData = undefined // Nodes and relations
   xAxis = undefined // Current d3 x-axis
@@ -45,6 +43,7 @@ export default class Graph {
   brushElem: any
   brush
   diagramDimensions
+  tooltip
 
   xDimension: Dimension
   yDimension: Dimension
@@ -65,6 +64,12 @@ export default class Graph {
       right: width - 15,
       bottom: height - 15
     }
+
+    const brush = d3
+      .brush()
+      .on('start brush', this.brushed.bind(this))
+      .on('end', this.brushEnd.bind(this))
+    this.brushElem = g.append('g').call(brush)
 
     this.diagram = g.append('g')
     this.xAxisG = g
@@ -91,80 +96,49 @@ export default class Graph {
       )
       .attr('class', 'axis axisRight')
 
-    const brush = d3
-      .brush()
-      .on('start brush', this.brushed.bind(this))
-      .on('end', this.brushEnd.bind(this))
-    this.brushElem = g.append('g').call(brush)
+    var tooltip = d3
+      .select('body')
+      .append('div')
+      .attr('class', 'tooltip')
+    this.tooltip = tooltip
 
-    // setup listeners
-    // document
-    //   .getElementById('xAxisSelect')
-    //   .addEventListener('change', this.selectDimension.bind(this))
-    // document
-    //   .getElementById('yAxisSelect')
-    //   .addEventListener('change', this.selectDimension.bind(this))
-    // document
-    //   .getElementById('yAxisRightSelect')
-    //   .addEventListener('change', this.selectDimension.bind(this))
     this.init(data, selectedDimensions)
   }
 
   public init(data, selectedDimensions) {
     GraphDataHolder.updateData(data, selectedDimensions)
 
-    // let domValues = {
-    //   id: '#xAxisSelect',
-    //   dimensions: ['Due date', 'Owner', 'Viewpoint'],
-    //   selected: 'Due date'
-    // }
     this.xDimension = new Dimension(
       [this.diagramDimensions.left, this.diagramDimensions.right],
       GraphDataHolder.getNodes(),
-      selectedDimensions.xDimension
+      selectedDimensions.xDimension,
+      'xAxis'
     )
 
-    // domValues = {
-    //   id: '#yAxisSelect',
-    //   dimensions: ['Viewpoint', 'Due date', 'Value', 'Owner'],
-    //   selected: 'Viewpoint'
-    // }
     this.yDimension = new Dimension(
       [this.diagramDimensions.bottom, this.diagramDimensions.top],
       GraphDataHolder.getGapNodes(),
-      selectedDimensions.yGapDimension
+      selectedDimensions.yGapDimension,
+      'yAxis'
     )
 
-    // domValues = {
-    //   id: '#yAxisRightSelect',
-    //   dimensions: ['Viewpoint', 'Due date', 'Value'],
-    //   selected: 'Due date'
-    // }
     this.yRightDimension = new Dimension(
       [this.diagramDimensions.bottom, this.diagramDimensions.top],
       GraphDataHolder.getConceptNodes(),
-      selectedDimensions.yConceptDimension
+      selectedDimensions.yConceptDimension,
+      'yRightAxis'
     )
     this.UpdateGraph()
   }
 
-  // public selectDimension() {
-  //   this.xDimension.updateAxis()
-  //   this.yDimension.updateAxis()
-  //   this.yRightDimension.updateAxis()
-
-  //   this.xAxis = d3.axisBottom(this.xDimension.getScale()).tickSize(10).tickPadding(5)
-  //   this.yAxis = d3.axisLeft(this.yDimension.getScale())
-  //   this.yAxisRight = d3.axisRight(this.yRightDimension.getScale())
-
-  //   this.redraw()
-  // }
-
   public update(data, selectedDimensions) {
     GraphDataHolder.updateData(data, selectedDimensions)
-    this.xDimension.updateSelectedValue(GraphDataHolder.xAxis)
-    this.yDimension.updateSelectedValue(GraphDataHolder.yAxis)
-    this.yRightDimension.updateSelectedValue(GraphDataHolder.yAxisRight)
+    this.xDimension.update(GraphDataHolder.xAxis, GraphDataHolder.getNodes())
+    this.yDimension.update(GraphDataHolder.yAxis, GraphDataHolder.getGapNodes())
+    this.yRightDimension.update(
+      GraphDataHolder.yAxisRight,
+      GraphDataHolder.getConceptNodes()
+    )
     this.UpdateGraph()
   }
 
@@ -173,12 +147,9 @@ export default class Graph {
     this.yDimension.updateAxis()
     this.yRightDimension.updateAxis()
 
-    this.xAxis = d3
-      .axisBottom(this.xDimension.getScale())
-      .tickSize(10)
-      .tickPadding(5)
-    this.yAxis = d3.axisLeft(this.yDimension.getScale())
-    this.yAxisRight = d3.axisRight(this.yRightDimension.getScale())
+    this.xAxis = this.xDimension.getAxis()
+    this.yAxis = this.yDimension.getAxis()
+    this.yAxisRight = this.yRightDimension.getAxis()
 
     this.redraw()
   }
@@ -192,6 +163,132 @@ export default class Graph {
     //   GraphDataHolder.getGapRelations(),
     //   GraphDataHolder.getGapConceptRelations()
     // )
+  }
+
+  private onNodeClick(mp) {
+    this.selectedGaps = []
+    this.selectedConcepts = []
+    const px = mp[0]
+    const py = mp[1]
+    const InNodeArea = function(cx, cy) {
+      const dx = cx - px
+      const dy = cy - py
+      if (Math.sqrt(dx * dx + dy * dy) <= 10) {
+        return true
+      }
+    }
+    GraphDataHolder.getGapNodes().forEach((gap: Gap) => {
+      const cx = this.xDimension.getCoordinateValue(
+        getCurrentDimensionValue(gap, this.xDimension.getValue())
+      )
+      const cy = this.yDimension.getCoordinateValue(
+        getCurrentDimensionValue(gap, this.yDimension.getValue())
+      )
+      if (InNodeArea(cx, cy)) {
+        this.selectedGaps.push(gap)
+      }
+    })
+    GraphDataHolder.getConceptNodes().forEach((concept: Concept) => {
+      const cx = this.xDimension.getCoordinateValue(
+        getCurrentDimensionValue(concept, this.xDimension.getValue())
+      )
+      const cy = this.yRightDimension.getCoordinateValue(
+        getCurrentDimensionValue(concept, this.yRightDimension.getValue())
+      )
+      if (InNodeArea(cx, cy)) {
+        this.selectedConcepts.push(concept)
+      }
+    })
+    outsideCoordinates.forEach((node: any) => {
+      if (GraphDataHolder.getGap(node.id)) {
+        const cx = node.xCord
+        const cy = node.yCord
+        if (InNodeArea(cx, cy)) {
+          this.selectedGaps.push(GraphDataHolder.getGap(node.id))
+        }
+      } else if (GraphDataHolder.getConcept(node.id)) {
+        const cx = node.xCord
+        const cy = node.yCord
+        if (InNodeArea(cx, cy)) {
+          this.selectedConcepts.push(GraphDataHolder.getConcept(node.id))
+        }
+      }
+    })
+    this.redraw()
+    this.updateText()
+  }
+
+  private onMouseOver(mp, nodeData) {
+    const gapsList = []
+    const conceptList = []
+    const px = mp[0]
+    const py = mp[1]
+
+    const InNodeArea = function(cx, cy) {
+      const dx = cx - px
+      const dy = cy - py
+      if (Math.sqrt(dx * dx + dy * dy) <= 10) {
+        return true
+      }
+    }
+    GraphDataHolder.getGapNodes().forEach((gap: Gap) => {
+      const cx = this.xDimension.getCoordinateValue(
+        getCurrentDimensionValue(gap, this.xDimension.getValue())
+      )
+      const cy = this.yDimension.getCoordinateValue(
+        getCurrentDimensionValue(gap, this.yDimension.getValue())
+      )
+      if (InNodeArea(cx, cy)) {
+        gapsList.push(gap)
+      }
+    })
+    GraphDataHolder.getConceptNodes().forEach((concept: Concept) => {
+      const cx = this.xDimension.getCoordinateValue(
+        getCurrentDimensionValue(concept, this.xDimension.getValue())
+      )
+      const cy = this.yRightDimension.getCoordinateValue(
+        getCurrentDimensionValue(concept, this.yRightDimension.getValue())
+      )
+      if (InNodeArea(cx, cy)) {
+        conceptList.push(concept)
+      }
+    })
+
+    var html = ''
+    const circle =
+      '<svg height="10" width="10" class="svg-circle"><circle cx="5" cy="5" r="4"/></svg>'
+    const triangle =
+      '<svg height="10" width="10" class="svg-triangle"><polygon points="5,0 10,10 0,10"/></svg>'
+
+    if (
+      (gapsList.length <= 1 && conceptList.length) === 0 ||
+      (conceptList.length <= 1 && gapsList.length === 0)
+    ) {
+      html = nodeData.title ? nodeData.title : '[no title]'
+    } else {
+      gapsList.forEach(gap => {
+        html += circle + ' ' + (gap.title ? gap.title : '[no title]') + '<br/>'
+      })
+      conceptList.forEach(concept => {
+        html +=
+          triangle +
+          ' ' +
+          (concept.title ? concept.title : '[no title]') +
+          '<br/>'
+      })
+    }
+
+    this.tooltip
+      .html(html)
+      .style('left', d3.event.pageX + 5 + 'px')
+      .style('top', d3.event.pageY - 28 + 'px')
+      .transition()
+      .duration(200)
+      .style('display', 'block')
+  }
+
+  private onMouseOut() {
+    this.tooltip.style('display', 'none')
   }
 
   private brushed() {
@@ -216,59 +313,6 @@ export default class Graph {
     if (d3.event.sourceEvent.type === 'brush') return
     if (d3.event.sourceEvent.type === 'end') return
 
-    if (!d3.event.selection) {
-      this.selectedGaps = []
-
-      const px = d3.mouse(this.brushElem.node())[0]
-      const py = d3.mouse(this.brushElem.node())[1]
-
-      const InNodeArea = function(cx, cy) {
-        const dx = cx - px
-        const dy = cy - py
-        if (Math.sqrt(dx * dx + dy * dy) <= 10) {
-          return true
-        }
-      }
-
-      GraphDataHolder.getGapNodes().forEach((gap: Gap) => {
-        const cx = this.xDimension.getCoordinateValue(
-          getCurrentDimensionValue(gap, this.xDimension.getValue())
-        )
-        const cy = this.yDimension.getCoordinateValue(
-          getCurrentDimensionValue(gap, this.yDimension.getValue())
-        )
-        if (InNodeArea(cx, cy)) {
-          this.selectedGaps.push(gap)
-        }
-      })
-      GraphDataHolder.getConceptNodes().forEach((concept: Concept) => {
-        const cx = this.xDimension.getCoordinateValue(
-          getCurrentDimensionValue(concept, this.xDimension.getValue())
-        )
-        const cy = this.yRightDimension.getCoordinateValue(
-          getCurrentDimensionValue(concept, this.yRightDimension.getValue())
-        )
-        if (InNodeArea(cx, cy)) {
-          this.selectedConcepts.push(concept)
-        }
-      })
-      outsideCoordinates.forEach((node: any) => {
-        if (GraphDataHolder.getGap(node.id)) {
-          const cx = node.xCord
-          const cy = node.yCord
-          if (InNodeArea(cx, cy)) {
-            this.selectedGaps.push(GraphDataHolder.getGap(node.id))
-          }
-        } else if (GraphDataHolder.getConcept(node.id)) {
-          const cx = node.xCord
-          const cy = node.yCord
-          if (InNodeArea(cx, cy)) {
-            this.selectedConcepts.push(GraphDataHolder.getConcept(node.id))
-          }
-        }
-      })
-    }
-
     d3.select(this.brushElem.node()).call(d3.event.target.move, null)
     this.redraw()
     this.updateText()
@@ -278,6 +322,41 @@ export default class Graph {
     this.xAxisG.call(this.xAxis)
     this.yAxisG.call(this.yAxis)
     this.yAxisRightG.call(this.yAxisRight)
+
+    this.diagram.selectAll('.axis-unit').remove()
+    if (this.yDimension.getTypeOfValue() == 'value') {
+      this.diagram
+        .append('text')
+        .attr('x', this.diagramDimensions.left - 8)
+        .attr('y', this.diagramDimensions.top - 15)
+        .text('$')
+        .attr('font-size', '12px')
+        .attr('fill', '#14406C')
+        .attr('font-family', 'Montserrat')
+        .attr('class', 'axis-unit')
+    }
+    if (this.yRightDimension.getTypeOfValue() == 'value') {
+      this.diagram
+        .append('text')
+        .attr('x', this.diagramDimensions.right)
+        .attr('y', this.diagramDimensions.top - 15)
+        .text('$')
+        .attr('font-size', '12px')
+        .attr('fill', '#2e82a9')
+        .attr('font-family', 'Montserrat')
+        .attr('class', 'axis-unit')
+    }
+    if (this.xDimension.getTypeOfValue() == 'value') {
+      this.diagram
+        .append('text')
+        .attr('x', this.diagramDimensions.right + 35)
+        .attr('y', this.diagramDimensions.bottom + 21)
+        .text('$')
+        .attr('font-size', '12px')
+        .attr('fill', '#14406C')
+        .attr('font-family', 'Montserrat')
+        .attr('class', 'axis-unit')
+    }
 
     outsideGapXCord.reset()
     outsideConceptXCord.reset()
@@ -290,6 +369,25 @@ export default class Graph {
       .enter()
       .append('circle')
       .merge(gaps)
+      .on(
+        'mouseover',
+        function(d, i, e) {
+          this.onMouseOver(d3.mouse(this.brushElem.node()), d)
+        }.bind(this)
+      )
+      .on(
+        'mouseout',
+        function() {
+          this.onMouseOut()
+        }.bind(this)
+      )
+      .on(
+        'click',
+        function(d, i, e) {
+          this.onNodeClick(d3.mouse(this.brushElem.node()))
+          // this.onNodeClick(d3.mouse(e[i]))
+        }.bind(this)
+      )
       .transition()
       .duration(1250)
       .attrs(getCoordinatesFunction(this))
@@ -317,6 +415,25 @@ export default class Graph {
       .enter()
       .append('path')
       .merge(concepts)
+      .on(
+        'mouseover',
+        function(d, i, e) {
+          this.onMouseOver(d3.mouse(this.brushElem.node()), d)
+        }.bind(this)
+      )
+      .on(
+        'mouseout',
+        function() {
+          this.onMouseOut()
+        }.bind(this)
+      )
+      .on(
+        'click',
+        function(d, i, e) {
+          this.onNodeClick(d3.mouse(this.brushElem.node()))
+          // this.onNodeClick(d3.mouse(e[i]))
+        }.bind(this)
+      )
       .transition()
       .duration(1250)
       .attr(
@@ -370,25 +487,45 @@ export default class Graph {
         return 'gap-concept-relation'
       })
 
-    this.diagram.selectAll('text').remove()
+    const gapConceptRelationsLabels = this.diagram
+      .selectAll('.gap-concept-relation-label')
+      .data(GraphDataHolder.getGapConceptRelations())
+    gapConceptRelationsLabels.exit().remove()
+    gapConceptRelationsLabels
+      .enter()
+      .append('text')
+      .text(d => {
+        return 'tlr: ' + d.trl
+      })
+      .merge(gapConceptRelationsLabels)
+      .transition()
+      .duration(1250)
+      .attr('text-anchor', 'middle')
+      .attrs(getGapConceptRelationLabelCoordinatesFunction(this))
+      .attr('class', relation => {
+        return 'gap-concept-relation-label'
+      })
+
+    this.diagram.selectAll('.outside-header').remove()
     if (outsideCoordinates.length) {
       this.diagram
         .append('text')
         .attr('x', this.diagramDimensions.left - 100)
         .attr('y', this.diagramDimensions.bottom + 50)
         .text('Nodes without')
-        .attr('font-family', 'sans-serif')
         .attr('font-size', '12px')
         .attr('fill', '#14406C')
         .attr('font-family', 'Montserrat')
+        .attr('class', 'outside-header')
       this.diagram
         .append('text')
         .attr('x', this.diagramDimensions.left - 100)
         .attr('y', this.diagramDimensions.bottom + 65)
         .text(' values:')
-        .attr('font-family', 'sans-serif')
         .attr('font-size', '12px')
         .attr('fill', '#14406C')
+        .attr('font-family', 'Montserrat')
+        .attr('class', 'outside-header')
     }
   }
 }

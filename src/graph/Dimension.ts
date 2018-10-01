@@ -9,7 +9,8 @@ export default class Dimension {
     private range: number[],
     private nodes: any,
     // private domValues: any,
-    private selectedValue: string
+    private selectedValue: string,
+    private name: string
   ) {
 
     // d3.selectAll(domValues.id).html("");
@@ -30,8 +31,9 @@ export default class Dimension {
     // })
   }
 
-  public updateSelectedValue(value) {
-    this.selectedValue = value;
+  public update(selectedValue, nodes) {
+    this.selectedValue = selectedValue;
+    this.nodes = nodes
   }
 
   public updateAxis() {
@@ -41,11 +43,24 @@ export default class Dimension {
     const xValueDomain = computeDomain(this.nodes, this.selectedValue)
     this.scale = createD3Scale(this.nodes[0], this.selectedValue)
     this.scale.domain(xValueDomain)
+    if (typeof this.scale.domain(xValueDomain).nice != 'undefined') {
+      this.scale.domain(xValueDomain).nice()
+    }
     this.scale.range(this.range)
   }
 
   public getScale() {
     return this.scale
+  }
+
+  public getTypeOfValue() {
+    const value = this.selectedValue
+    if (value == 'dueDate' || value == 'changeDate' || value == "creationDate" || value == "revisitDate") {
+      return 'date'
+    } else if (value == 'value') {
+      return 'value'
+    }
+    return value
   }
 
   /**
@@ -67,4 +82,39 @@ export default class Dimension {
   public getValue(): string {
     return this.selectedValue
   }
+
+
+
+  public getAxis() {
+    function checkIfDate(value) {
+      if (value == 'dueDate' || value == 'changeDate' || value == "creationDate" || value == "revisitDate") {
+        return true
+      }
+    }
+    function dateFormat() {
+      return d3.timeFormat("%b, %Y")
+    }
+
+    switch (this.name) {
+      case 'xAxis':
+        if (checkIfDate(this.getValue())) {
+          return d3.axisBottom(this.getScale()).tickPadding(8).tickFormat(dateFormat())
+        }
+        return d3.axisBottom(this.getScale()).tickPadding(8)
+      case 'yAxis':
+        if (checkIfDate(this.getValue())) {
+          return d3.axisLeft(this.getScale()).tickFormat(dateFormat())
+        }
+        return d3.axisLeft(this.getScale())
+      case 'yRightAxis':
+        if (checkIfDate(this.getValue())) {
+          return d3.axisRight(this.getScale()).tickFormat(dateFormat())
+        }
+        return d3.axisRight(this.getScale())
+      default:
+    }
+  }
 }
+
+
+

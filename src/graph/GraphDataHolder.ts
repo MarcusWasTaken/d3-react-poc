@@ -3,11 +3,10 @@ import { GapConceptRelation } from 'models/gap-concept-relation/GapConceptRelati
 import { Gap } from 'models/gap/Gap'
 import { Concept } from 'models/concept/Concept'
 import { GraphObject } from 'models/GraphObject'
-import GapService from 'models/gap/GapService';
-import ConceptService from 'models/concept/ConceptService';
-import GapRelationService from 'models/gap-relation/GapRelationService';
-import GapConceptRelationService from 'models/gap-concept-relation/GapConceptRelationService';
-
+import GapService from 'models/gap/GapService'
+import ConceptService from 'models/concept/ConceptService'
+import GapRelationService from 'models/gap-relation/GapRelationService'
+import GapConceptRelationService from 'models/gap-concept-relation/GapConceptRelationService'
 
 class GraphDataHolderSingleton {
   gaps = []
@@ -19,53 +18,55 @@ class GraphDataHolderSingleton {
   yAxisRight = ''
 
   private updateDataWithMethods(data) {
+    console.log('data: ', data)
+
     this.gaps = []
     this.concepts = []
     this.gapRelations = []
     this.gapConceptRelations = []
     data.gaps.forEach(gap => {
-      gap.getId = () => gap.id,
-        gap.getValue = (id: string) => {
+      ;(gap.getId = () => gap.id),
+        (gap.getValue = (id: string) => {
           if (id === 'value') {
             return gap.value.value
           }
           return gap[id]
-        }
+        })
       this.gaps.push(gap)
     })
     data.concepts.forEach(concept => {
-      concept.getId = () => concept.id,
-        concept.getValue = (id: string) => {
+      ;(concept.getId = () => concept.id),
+        (concept.getValue = (id: string) => {
           if (id === 'value') {
             return concept.complexity.value
           }
           return concept[id]
-        }
+        })
       this.concepts.push(concept)
     })
 
     data.gapRelations.forEach(relation => {
-      relation.getId = () => relation.id,
-        relation.getValue = (id: string) => {
+      ;(relation.getId = () => relation.id),
+        (relation.getValue = (id: string) => {
           return relation[id]
-        }
+        })
       this.gapRelations.push(relation)
     })
 
     data.gapConceptRelations.forEach(relation => {
-      relation.getId = () => relation.id,
-        relation.getValue = (id: string) => {
+      ;(relation.getId = () => relation.id),
+        (relation.getValue = (id: string) => {
           return relation[id]
-        }
+        })
       this.gapConceptRelations.push(relation)
     })
   }
 
   public updateData(data, dimensionSelections) {
     this.updateDataWithMethods(data)
-    this.yAxis = dimensionSelections.yGapDimension;
-    this.xAxis = dimensionSelections.xDimension;
-    this.yAxisRight = dimensionSelections.yConceptDimension;
+    this.yAxis = dimensionSelections.yGapDimension
+    this.xAxis = dimensionSelections.xDimension
+    this.yAxisRight = dimensionSelections.yConceptDimension
   }
 
   public nodeSelctionChange(selectedNodes) {
@@ -73,27 +74,27 @@ class GraphDataHolderSingleton {
   }
 
   public getConcept(id) {
-    return this.getConceptNodes().find(concept => concept.getId() === id);
+    return this.getConceptNodes().find(concept => concept.getId() === id)
   }
 
   public getGap(id) {
-    return this.gaps.find(gap => gap.id === id);
+    return this.gaps.find(gap => gap.id === id)
   }
 
   public getGapNodes() {
-    return this.gaps;
+    return this.gaps
   }
 
   public getConceptNodes() {
-    return this.concepts;
+    return this.concepts
   }
 
   public getGapRelations() {
-    return this.gapRelations;
+    return this.gapRelations
   }
 
   public getGapConceptRelations() {
-    return this.gapConceptRelations;
+    return this.gapConceptRelations
   }
 
   public getRelations() {
@@ -103,9 +104,6 @@ class GraphDataHolderSingleton {
   public getNodes() {
     return [...this.getGapNodes(), ...this.getConceptNodes()]
   }
-
-
-
 }
 
 export const GraphDataHolder = new GraphDataHolderSingleton()

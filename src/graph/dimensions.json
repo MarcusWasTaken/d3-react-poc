@@ -1,5 +1,26 @@
 {
-  "viewpoint": ["Strategy", "Business area", "Product platform", "Technology"],
-
-  "owner": ["Tord Karlin", "Gustav Mårtensson", "Lars Ivansen", "Nils Nilsson"]
+  "viewpoint": [
+    "Technology",
+    "Product platform",
+    "Business area",
+    "Strategy"
+  ],
+  "owner": [
+    "Tord Karlin",
+    "Gustav Mårtensson",
+    "Lars Ivansen",
+    "Nils Nilsson"
+  ],
+  "createdBy": [
+    "Tord Karlin",
+    "Gustav Mårtensson",
+    "Lars Ivansen",
+    "Nils Nilsson"
+  ],
+  "changedBy": [
+    "Tord Karlin",
+    "Gustav Mårtensson",
+    "Lars Ivansen",
+    "Nils Nilsson"
+  ]
 }
